@@ -11,7 +11,7 @@ import { User } from "./entity/User";
   providers: [AppService],
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
+      isGlobal: true,     
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
