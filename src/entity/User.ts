@@ -1,5 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { 
+  Entity, 
+  PrimaryGeneratedColumn, 
+  Column, 
+  CreateDateColumn, 
+  UpdateDateColumn, 
+  ManyToMany,
+  JoinTable
+} from "typeorm";
+import { Role } from "./Role";
 
 @Entity()
 export class User {
@@ -32,4 +41,12 @@ export class User {
 
   @UpdateDateColumn({ type: "timestamp", name: "updated_at" })
   updatedAt: Date;
+
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable({ 
+    name: "user_roles",
+    joinColumn: { name: "user_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "role_id", referencedColumnName: "id" },
+  })
+  roles: Role[];
 }
