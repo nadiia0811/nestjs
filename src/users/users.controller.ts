@@ -5,6 +5,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/entity/User';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles-auth.decorator';
+import { AddRoleDto } from './dto/add-role.dto';
+import { BanUserDto } from './dto/ban-user.dto';
 
 
 @ApiTags("Users")
@@ -26,5 +28,23 @@ export class UsersController {
     @UseGuards(RolesGuard)
     getAllUsers() {
         return this.usersService.getAllUsers();
+    }
+
+    @ApiOperation({ summary: "Assign a role" })
+    @ApiResponse({ status: 200 })
+    @Post("/role")
+    @Roles("ADMIN")
+    @UseGuards(RolesGuard)
+    addRole(@Body() dto: AddRoleDto) {
+        return this.usersService.addRole(dto);
+    }
+
+    @ApiOperation({ summary: "Ban user" })
+    @ApiResponse({ status: 200 })
+    @Post("/ban")
+    @Roles("ADMIN")
+    @UseGuards(RolesGuard)
+    ban(@Body() dto: BanUserDto) {
+        return this.usersService.ban(dto);
     }
 }
