@@ -57,6 +57,12 @@ export class UsersService {
   }
 
   async ban(dto: BanUserDto) {
-    return false;
+    const user = await this.userRepo.findOne({ where: { id: dto.userId } });
+    if(user) {
+      user.banned = true;
+      user.banReason = dto.banReason;
+      await this.userRepo.save(user);
+      return user;
+    }
   }
 }
